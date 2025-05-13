@@ -1,1 +1,13 @@
-<p>login works!</p>
+<div class="container mt-5">
+  <div class="card p-4 shadow-sm w-50 mx-auto">
+    <h3 class="text-center">Login</h3>
+    <div class="mb-3">
+      <input type="text" [(ngModel)]="username" class="form-control" placeholder="Username">
+    </div>
+    <div class="mb-3">
+      <input type="password" [(ngModel)]="password" class="form-control" placeholder="Password">
+    </div>
+    <button class="btn btn-primary w-100" (click)="login()">Login</button>
+    <p class="text-danger mt-2 text-center" *ngIf="error">{{ error }}</p>
+  </div>
+</div>
