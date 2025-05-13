@@ -5,6 +5,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { ManagerComponent } from './manager/manager.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import {FormsModule} from "@angular/forms";
+import {NgChartsModule} from "ng2-charts";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {FormsModule} from "@angular/forms";
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    FormsModule
+    FormsModule,
+    NgChartsModule
   ]
 })
 export class DashboardModule { }

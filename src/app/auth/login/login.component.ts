@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -11,14 +12,11 @@ export class LoginComponent {
   password = '';
   error = '';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    if (this.username === 'admin2025' && this.password === 'admin') {
-      localStorage.setItem('auth', 'true');
-      this.router.navigate(['/dashboard/manager']);
-    } else {
-      this.error = 'Wrong username or password!';
-    }
+    this.authService.login(this.username, this.password)
+      .then(() => this.router.navigate(['/dashboard/manager']))
+      .catch(err => this.error = 'Invalid credentials.');
   }
 }
