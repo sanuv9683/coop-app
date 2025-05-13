@@ -3,11 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {provideFirebaseApp} from "@angular/fire/app";
-import firebase from "firebase/compat";
-import initializeApp = firebase.initializeApp;
 import {environment} from "../environments/environment";
-import {getFirestore, provideFirestore} from "@angular/fire/firestore";
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
