@@ -14,10 +14,12 @@ export class SalesService {
   }
 
   async getSales(startDate: string, store?: string) {
-    let q = query(collection(this.firestore, 'sales'), where('date', '>=', startDate));
+    const salesRef = collection(this.firestore, 'sales');
+    let q = query(salesRef, where('date', '>=', startDate));
     if (store && store !== 'All') {
       q = query(q, where('store', '==', store));
     }
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => doc.data());
   }

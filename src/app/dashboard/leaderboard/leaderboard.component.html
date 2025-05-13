@@ -1,1 +1,35 @@
-<p>leaderboard works!</p>
+<div class="container mt-5">
+  <h3 class="mb-4">Sales Leaderboard</h3>
+
+  <div class="card p-4 shadow-sm mb-4">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <select [(ngModel)]="storeFilter" class="form-select">
+          <option value="East Barnet">East Barnet</option>
+          <option value="Wood House">Wood House</option>
+          <option value="All">All Stores</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select [(ngModel)]="timeFilter" class="form-select">
+          <option value="day">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="year">This Year</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary w-100" (click)="loadLeaderboard()">Show Rankings</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-4 shadow-sm">
+    <h5>Top Sellers</h5>
+    <ul class="list-group">
+      <li *ngFor="let entry of leaderboard" class="list-group-item">
+        {{ entry.name }} - {{ entry.total }} cards
+      </li>
+    </ul>
+  </div>
+</div>
