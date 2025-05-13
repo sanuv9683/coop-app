@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "baseHref": "/coop-app/",
             "outputPath": "dist/coop-app",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -94,5 +95,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "1c1fc4b8-8dc1-4c63-97ae-0bf39d98abbd"
   }
 }
