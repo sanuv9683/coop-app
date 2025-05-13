@@ -1,1 +1,27 @@
-<p>manager works!</p>
+<div class="container mt-5">
+  <h3 class="mb-4">Manager Dashboard</h3>
+
+  <div class="card p-4 shadow-sm mb-4">
+    <h5>Add Sales Entry</h5>
+
+    <select [(ngModel)]="store" class="form-select mb-3">
+      <option value="East Barnet">East Barnet</option>
+      <option value="Wood House">Wood House</option>
+    </select>
+
+    <input type="text" [(ngModel)]="college" class="form-control mb-3" placeholder="College Name">
+    <input type="number" [(ngModel)]="cardsSold" class="form-control mb-3" placeholder="Cards Sold">
+
+    <button class="btn btn-success" (click)="submitSale()">Submit</button>
+    <p class="text-success mt-2" *ngIf="message">{{ message }}</p>
+  </div>
+
+  <div class="card p-4 shadow-sm">
+    <h5>Today's Sales</h5>
+    <ul class="list-group">
+      <li *ngFor="let sale of todaySales" class="list-group-item">
+        {{ sale.college }} ({{ sale.store }}) - {{ sale.cardsSold }} cards
+      </li>
+    </ul>
+  </div>
+</div>
