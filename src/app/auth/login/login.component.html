@@ -1,13 +1,28 @@
-<div class="container mt-5">
-  <div class="card p-4 shadow-sm w-50 mx-auto">
-    <h3 class="text-center">Login</h3>
-    <div class="mb-3">
-      <input type="text" [(ngModel)]="username" class="form-control" placeholder="Username">
-    </div>
-    <div class="mb-3">
-      <input type="password" [(ngModel)]="password" class="form-control" placeholder="Password">
-    </div>
-    <button class="btn btn-primary w-100" (click)="login()">Login</button>
-    <p class="text-danger mt-2 text-center" *ngIf="error">{{ error }}</p>
+<div class="login-form">
+  <h1>Login</h1>
+
+  <div class="txtb">
+    <input type="text" (focus)="focused = true"
+           (blur)="onBlur($event)"
+           [class.focus]="focused" [(ngModel)]="username">
+    <span data-placeholder="Username"></span>
   </div>
+
+  <div class="txtb">
+    <input type="password" (focus)="focused = true"
+           (blur)="onBlur($event)"
+           [class.focus]="focused" [(ngModel)]="password">
+    <span data-placeholder="Password"></span>
+  </div>
+  <small class="text-danger" *ngIf="error">{{ error }}</small>
+
+  <input type="submit" (click)="login()" class="logbtn" value="login">
+
+  <div class="bottom-text">
+    Developed By <a target="_blank" href="https://akrivo.lk"> Sanu Vithanage </a>
+  </div>
+
 </div>
+
+
+
