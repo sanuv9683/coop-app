@@ -7,13 +7,15 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import {FormsModule} from "@angular/forms";
 import {NgChartsModule} from "ng2-charts";
 import { HeaderComponent } from './common/header/header.component';
+import { FooterComponent } from './common/footer/footer.component';
 
 
 @NgModule({
   declarations: [
     ManagerComponent,
     LeaderboardComponent,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
