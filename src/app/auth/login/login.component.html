@@ -1,17 +1,15 @@
 <div class="login-form">
-  <h1>Login</h1>
+  <h1 class="header">Coop App</h1>
 
   <div class="txtb">
-    <input type="text" (focus)="focused = true"
-           (blur)="onBlur($event)"
-           [class.focus]="focused" [(ngModel)]="username">
+    <input type="text" [class.focus]="usernameFocused" (focus)="usernameFocused = true"
+           (blur)="onBlurUsername($event)" [(ngModel)]="username">
     <span data-placeholder="Username"></span>
   </div>
 
   <div class="txtb">
-    <input type="password" (focus)="focused = true"
-           (blur)="onBlur($event)"
-           [class.focus]="focused" [(ngModel)]="password">
+    <input type="password" [class.focus]="passwordFocused"  (focus)="passwordFocused = true"
+           (blur)="onBlurPassword($event)" [(ngModel)]="password">
     <span data-placeholder="Password"></span>
   </div>
   <small class="text-danger" *ngIf="error">{{ error }}</small>

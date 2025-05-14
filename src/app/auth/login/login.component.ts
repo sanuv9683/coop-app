@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 
@@ -11,9 +11,11 @@ export class LoginComponent {
   username = '';
   password = '';
   error = '';
-  focused = false;
+  usernameFocused = false;
+  passwordFocused = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
   login() {
     this.authService.login(this.username, this.password)
@@ -22,9 +24,13 @@ export class LoginComponent {
   }
 
 
+  onBlurUsername(e: FocusEvent) {
+    const v = (e.target as HTMLInputElement).value;
+    this.usernameFocused = !!v;
+  }
 
-  onBlur(event: FocusEvent) {
-    const input = event.target as HTMLInputElement;
-    this.focused = !!input.value;
+  onBlurPassword(e: FocusEvent) {
+    const v = (e.target as HTMLInputElement).value;
+    this.passwordFocused = !!v;
   }
 }
