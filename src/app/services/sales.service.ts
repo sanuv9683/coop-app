@@ -13,6 +13,10 @@ export class SalesService {
     return addDoc(salesRef, data);
   }
 
+
+
+
+
   async getSales(startDate: string, store?: string) {
     const salesRef = collection(this.firestore, 'sales');
     let q = query(salesRef, where('date', '>=', startDate));

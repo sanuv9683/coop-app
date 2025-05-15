@@ -1,8 +1,9 @@
 
 import { Injectable } from '@angular/core';
-import {Firestore, collection, query, where, getDocs, collectionData, updateDoc, doc, addDoc, deleteDoc} from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import {Firestore, collection, query, where, getDocs, updateDoc, doc, addDoc, deleteDoc,orderBy} from '@angular/fire/firestore';
 import { College } from '../dto/college';
+import { Observable, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({ providedIn: 'root' })
@@ -11,11 +12,20 @@ export class CollegeService {
 
   constructor(private firestore: Firestore) {}
 
-  /** Stream of all colleges (with id) */
   getColleges(): Observable<College[]> {
-   this.colRef = collection(this.firestore, 'colleges');
-    return collectionData(this.colRef, { idField: 'id' }) as Observable<College[]>;
+    const q = query(this.colRef);
+
+    return from(getDocs(q)).pipe(
+      map(snapshot =>
+        snapshot.docs.map(doc => ({
+          id:    doc.id,
+          ...(doc.data() as Omit<College, 'id'>)
+        }))
+      )
+    );
   }
+
+
 
   /** Add a new college */
   addCollege(col: Omit<College, 'id'>) {

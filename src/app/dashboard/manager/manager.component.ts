@@ -13,8 +13,7 @@ export class ManagerComponent implements OnInit{
   college = '';
   cardsSold!: number;
   message = '';
-  todaySales: any[] = [];
-  stores = ['East Barnet', 'Wood House'] as const;
+  todaySales: any[] = []
   colleges: College[] = [];
 
 
@@ -46,50 +45,6 @@ export class ManagerComponent implements OnInit{
   async loadTodaySales() {
     const today = new Date().toISOString().split('T')[0];
     this.todaySales = await this.salesService.getSales(today);
-
-    this.collegeSvc.getColleges()
-      .subscribe(list => this.colleges = list);
   }
 
-
-//   colleges crud operations
-
-
-  // holds the form state for add/edit
-  current: College = { name: '', store: this.stores[0] };
-  /** Add new or save edits */
-  async save() {
-    if (!this.current.name.trim()) {
-      return alert('College name is required');
-    }
-
-    if (this.current.id) {
-      await this.collegeSvc.updateCollege(this.current.id, {
-        name: this.current.name,
-        store: this.current.store
-      });
-    } else {
-      await this.collegeSvc.addCollege({
-        name: this.current.name,
-        store: this.current.store
-      });
-    }
-
-    this.resetForm();
-  }
-
-  edit(col: College) {
-    this.current = { ...col };
-  }
-
-  async delete(col: College) {
-    if (confirm(`Delete ${col.name}?`)) {
-      await this.collegeSvc.deleteCollege(col.id!);
-      if (this.current.id === col.id) this.resetForm();
-    }
-  }
-
-  resetForm() {
-    this.current = { name: '', store: this.stores[0] };
-  }
 }
