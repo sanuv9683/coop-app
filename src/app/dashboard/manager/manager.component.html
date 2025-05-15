@@ -2,6 +2,67 @@
 
 <div class="container mt-5">
   <h3 class="mb-4">Manager Dashboard</h3>
+<app-college></app-college>
+<!--  &lt;!&ndash; src/app/app/college-management/college-management.component.html &ndash;&gt;-->
+<!--  <div class="card p-4 mb-5 shadow-sm">-->
+<!--    <h5>Manage Colleges</h5>-->
+<!--    <form (ngSubmit)="save()" class="row gy-2 gx-3 align-items-end">-->
+<!--      <div class="col-md-5">-->
+<!--        <label class="form-label">College Name</label>-->
+<!--        <input-->
+<!--          [(ngModel)]="current.name"-->
+<!--          name="name"-->
+<!--          class="form-control"-->
+<!--          required-->
+<!--        />-->
+<!--      </div>-->
+
+<!--      <div class="col-md-4">-->
+<!--        <label class="form-label">Store</label>-->
+<!--        <select-->
+<!--          [(ngModel)]="current.store"-->
+<!--          name="store"-->
+<!--          class="form-select"-->
+<!--        >-->
+<!--          <option *ngFor="let s of stores" [value]="s">{{ s }}</option>-->
+<!--        </select>-->
+<!--      </div>-->
+
+<!--      <div class="col-md-3 d-flex">-->
+<!--        <button type="submit" class="btn btn-primary me-2">-->
+<!--          {{ current.id ? 'Save' : 'Add College' }}-->
+<!--        </button>-->
+<!--        <button-->
+<!--          *ngIf="current.id"-->
+<!--          type="button"-->
+<!--          class="btn btn-secondary"-->
+<!--          (click)="resetForm()"-->
+<!--        >Cancel</button>-->
+<!--      </div>-->
+<!--    </form>-->
+
+<!--    <table class="table table-striped mt-4">-->
+<!--      <thead>-->
+<!--      <tr><th>Name</th><th>Store</th><th>Actions</th></tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      <tr *ngFor="let col of colleges">-->
+<!--        <td>{{ col.name }}</td>-->
+<!--        <td>{{ col.store }}</td>-->
+<!--        <td>-->
+<!--          <button-->
+<!--            class="btn btn-sm btn-outline-secondary me-2"-->
+<!--            (click)="edit(col)"-->
+<!--          >Edit</button>-->
+<!--          <button-->
+<!--            class="btn btn-sm btn-outline-danger"-->
+<!--            (click)="delete(col)"-->
+<!--          >Delete</button>-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
 
   <div class="card p-4 shadow-sm mb-4">
     <h5>Add Sales Entry</h5>
@@ -26,5 +87,7 @@
       </li>
     </ul>
   </div>
+
+
 </div>
 <app-footer></app-footer>

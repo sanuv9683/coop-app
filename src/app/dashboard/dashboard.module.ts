@@ -8,6 +8,7 @@ import {FormsModule} from "@angular/forms";
 import {NgChartsModule} from "ng2-charts";
 import { HeaderComponent } from './common/header/header.component';
 import { FooterComponent } from './common/footer/footer.component';
+import { CollegeComponent } from './college/college.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { FooterComponent } from './common/footer/footer.component';
     ManagerComponent,
     LeaderboardComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    CollegeComponent
   ],
   imports: [
     CommonModule,
