@@ -207,6 +207,8 @@ terms above.
 ng2-charts
 ISC
 
+rxfire/firestore
+
 rxjs
 Apache-2.0
                                Apache License
