@@ -16,30 +16,47 @@ export class ManagerComponent implements OnInit{
   todaySales: any[] = []
   colleges: College[] = [];
 
+  // testing
+  collegess: College[] = [];
+
+  selectedCollegeName: string | null = null;
+
 
   constructor(private salesService: SalesService,private collegeSvc: CollegeService) {}
 
   ngOnInit() {
     this.loadTodaySales();
+
+    this.collegeSvc.getColleges().subscribe(list=>{
+      this.collegess=list;
+    });
   }
 
   async submitSale() {
-    if (!this.college || !this.cardsSold) {
+    if (!this.selectedCollegeName || !this.cardsSold) {
       alert('Please fill out all fields.');
       return;
     }
 
-    await this.salesService.addSale({
-      store: this.store,
-      college: this.college,
-      cardsSold: this.cardsSold,
-      date: new Date().toISOString().split('T')[0]
+    this.salesService.saleExists(this.selectedCollegeName,new Date().toISOString().split('T')[0]).then(t=>{
+      if (!t){
+        alert("This one is alredy added");
+      }else{
+         this.salesService.addSale({
+          store: this.store,
+          college: this.selectedCollegeName,
+          cardsSold: this.cardsSold,
+          date: new Date().toISOString().split('T')[0]
+        });
+
+        this.message = 'Sale submitted successfully!';
+        this.college = '';
+        this.cardsSold = NaN;
+        this.loadTodaySales();
+      }
     });
 
-    this.message = 'Sale submitted successfully!';
-    this.college = '';
-    this.cardsSold = NaN;
-    this.loadTodaySales();
+
   }
 
   async loadTodaySales() {

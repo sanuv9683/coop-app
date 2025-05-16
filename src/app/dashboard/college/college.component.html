@@ -1,9 +1,9 @@
 <!-- src/app/college-management/college-management.component.html -->
-<div class="container mt-5">
+<div class="mt-1">
   <h3>College Management</h3>
 
   <!-- ▶️ Add / Edit Form -->
-  <div class="card p-4 mb-5 shadow-sm">
+  <div class="card p-4 mb-2 shadow-sm">
     <form (ngSubmit)="save()" class="row gy-2 gx-3 align-items-end">
       <div class="col-md-5">
         <label class="form-label">College Name</label>
@@ -35,8 +35,7 @@
           *ngIf="current.id"
           type="button"
           class="btn btn-secondary"
-          (click)="resetForm()"
-        >
+          (click)="resetForm()">
           Cancel
         </button>
       </div>
@@ -49,7 +48,7 @@
     <table class="table table-striped">
       <thead>
       <tr>
-<!--        <th>ID</th>-->
+        <!--        <th>ID</th>-->
         <th>Name</th>
         <th>Store</th>
         <th class="text-end">Actions</th>
@@ -57,20 +56,22 @@
       </thead>
       <tbody>
       <tr *ngFor="let col of colleges">
-<!--        <td style="font-size: .85em; color: #666;">-->
-<!--          {{ col.id }}-->
-<!--        </td>-->
+        <!--        <td style="font-size: .85em; color: #666;">-->
+        <!--          {{ col.id }}-->
+        <!--        </td>-->
         <td>{{ col.name }}</td>
         <td>{{ col.store }}</td>
         <td class="text-end">
           <button
             class="btn btn-sm btn-outline-secondary me-2"
             (click)="edit(col)"
-          >Edit</button>
+          >Edit
+          </button>
           <button
             class="btn btn-sm btn-outline-danger"
             (click)="delete(col)"
-          >Delete</button>
+          >Delete
+          </button>
         </td>
       </tr>
       <tr *ngIf="colleges.length === 0">

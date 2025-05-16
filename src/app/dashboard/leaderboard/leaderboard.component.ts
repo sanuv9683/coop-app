@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {SalesService} from "../../services/sales.service";
 
 @Component({
@@ -11,8 +11,8 @@ export class LeaderboardComponent {
   timeFilter = 'day';
   leaderboard: any[] = [];
 
-
-  constructor(private salesService: SalesService) {}
+  constructor(private salesService: SalesService) {
+  }
 
   async loadLeaderboard() {
     const startDate = this.getStartDate(this.timeFilter);
@@ -26,7 +26,7 @@ export class LeaderboardComponent {
     }
 
     this.leaderboard = Object.entries(summary)
-      .map(([name, total]) => ({ name, total }))
+      .map(([name, total]) => ({name, total}))
       .sort((a, b) => b.total - a.total);
   }
 
@@ -35,9 +35,15 @@ export class LeaderboardComponent {
     let start: Date = new Date();
 
     switch (type) {
-      case 'week': start.setDate(now.getDate() - 7); break;
-      case 'month': start.setMonth(now.getMonth() - 1); break;
-      case 'year': start.setFullYear(now.getFullYear() - 1); break;
+      case 'week':
+        start.setDate(now.getDate() - 7);
+        break;
+      case 'month':
+        start.setMonth(now.getMonth() - 1);
+        break;
+      case 'year':
+        start.setFullYear(now.getFullYear() - 1);
+        break;
     }
 
     return start.toISOString().split('T')[0];

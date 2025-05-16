@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { ManagerComponent } from './manager/manager.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
@@ -23,7 +23,8 @@ import { CollegeComponent } from './college/college.component';
     CommonModule,
     DashboardRoutingModule,
     FormsModule,
-    NgChartsModule
+    NgChartsModule,
+    NgSelectModule
   ]
 })
 export class DashboardModule { }
