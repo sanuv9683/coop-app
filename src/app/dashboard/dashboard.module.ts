@@ -9,6 +9,7 @@ import {NgChartsModule} from "ng2-charts";
 import { HeaderComponent } from './common/header/header.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { CollegeComponent } from './college/college.component';
+import { SalesComponent } from './sales/sales.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { CollegeComponent } from './college/college.component';
     LeaderboardComponent,
     HeaderComponent,
     FooterComponent,
-    CollegeComponent
+    CollegeComponent,
+    SalesComponent
   ],
   imports: [
     CommonModule,

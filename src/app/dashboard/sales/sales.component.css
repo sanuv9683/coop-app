@@ -1,0 +1,14 @@
+.sales-container {
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.controls {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+canvas {
+  margin-top: 1rem;
+}
