@@ -95,46 +95,53 @@ export class SalesComponent {
 
   aggregatedData: { employeeName: string; total: number }[] = [];
 
-  // Bar chart directive reference
-  @ViewChild('barChart', { static: false, read: BaseChartDirective })
-  barChart?: BaseChartDirective;
-  public barChartOptions: ChartOptions = { responsive: true, scales: { x: {}, y: { beginAtZero: true } } };
+  // Bar Chart
+  @ViewChild('barChart', { read: BaseChartDirective }) barChart?: BaseChartDirective;
   public barChartType: ChartType = 'bar';
+  public barChartOptions: ChartOptions = { responsive: true, scales: { x: {}, y: { beginAtZero: true } } };
   public barChartData: ChartData<'bar'> = { labels: [], datasets: [{ data: [], label: '' }] };
 
-  // Line chart directive reference
-  @ViewChild('lineChart', { static: false, read: BaseChartDirective })
-  lineChart?: BaseChartDirective;
-  public lineChartOptions: ChartOptions = { responsive: true, scales: { x: {}, y: { beginAtZero: true } } };
+  // Line Chart
+  @ViewChild('lineChart', { read: BaseChartDirective }) lineChart?: BaseChartDirective;
   public lineChartType: ChartType = 'line';
+  public lineChartOptions: ChartOptions = { responsive: true, scales: { x: {}, y: { beginAtZero: true } } };
   public lineChartData: ChartData<'line'> = { labels: [], datasets: [{ data: [], label: 'Monthly Sales' }] };
+
+  // Stacked Bar Chart: Employee by Store
+  @ViewChild('stackedChart', { read: BaseChartDirective }) stackedChart?: BaseChartDirective;
+  public stackedChartType: ChartType = 'bar';
+  public stackedChartOptions: ChartOptions = {
+    responsive: true,
+    scales: {
+      x: { stacked: true },
+      y: { stacked: true, beginAtZero: true }
+    }
+  };
+  public stackedChartData: ChartData<'bar'> = { labels: [], datasets: [] };
 
   ngOnInit() {
     this.aggregateEmployeeSales();
   }
 
   ngAfterViewInit() {
-    this.renderAllCharts();
+    this.updateAllCharts();
   }
 
   onStoreChange(store: string) {
     this.selectedStore = store;
-    this.updateAndRender();
+    this.updateAllCharts();
   }
 
   onPeriodChange(period: Period) {
     this.selectedPeriod = period;
-    this.updateAndRender();
+    this.updateAllCharts();
   }
 
-  private updateAndRender() {
+  private updateAllCharts() {
     this.aggregateEmployeeSales();
-    this.renderAllCharts();
-  }
-
-  private renderAllCharts() {
     this.renderBarChart();
     this.renderLineChart();
+    this.renderStackedChart();
   }
 
   private aggregateEmployeeSales() {
@@ -143,17 +150,17 @@ export class SalesComponent {
       r.store === this.selectedStore && this.isInSelectedPeriod(r.date, now)
     );
     const map = new Map<string, number>();
-    filtered.forEach(r => map.set(r.employeeName, (map.get(r.employeeName) || 0) + r.count));
+    filtered.forEach(r => {
+      map.set(r.employeeName, (map.get(r.employeeName) || 0) + r.count);
+    });
     this.aggregatedData = Array.from(map.entries()).map(([employeeName, total]) => ({ employeeName, total }));
   }
 
   private renderBarChart() {
     if (!this.barChart) return;
-    // Update data
     this.barChartData.labels = this.aggregatedData.map(d => d.employeeName);
     this.barChartData.datasets[0].data = this.aggregatedData.map(d => d.total);
-    this.barChartData.datasets[0].label = `${this.selectedPeriod.charAt(0).toUpperCase() + this.selectedPeriod.slice(1)} Sales`;
-    // Explicitly update Chart.js instance
+    this.barChartData.datasets[0].label = `${this.selectedPeriod} Sales`;
     this.barChart.chart?.update();
   }
 
@@ -161,14 +168,33 @@ export class SalesComponent {
     if (!this.lineChart) return;
     const now = new Date();
     const months = Array.from({ length: 12 }).map((_, i) => new Date(now.getFullYear(), now.getMonth() - (11 - i), 1));
-    this.lineChartData.labels = months.map(d => d.toLocaleString('default', { month: 'short', year: 'numeric' }));
+    this.lineChartData.labels = months.map(d => d.toLocaleString('default', { month: 'short' }));
     this.lineChartData.datasets[0].data = months.map(m =>
-      this.salesData
-        .filter(r => r.store === this.selectedStore && r.date.getFullYear() === m.getFullYear() && r.date.getMonth() === m.getMonth())
+      this.salesData.filter(r => r.store === this.selectedStore && r.date.getFullYear() === m.getFullYear() && r.date.getMonth() === m.getMonth())
         .reduce((sum, r) => sum + r.count, 0)
     );
-    this.lineChartData.datasets[0].label = 'Last 12 Months Sales';
     this.lineChart.chart?.update();
+  }
+
+  private renderStackedChart() {
+    if (!this.stackedChart) return;
+    // Group sales by employee and store across period
+    const employees = Array.from(new Set(this.salesData.map(r => r.employeeName)));
+    const stores = this.stores;
+
+    // Prepare datasets: one per store
+    const datasets = stores.map(store => ({
+      label: store,
+      data: employees.map(emp =>
+        this.salesData.filter(r => r.store === store && r.employeeName === emp && this.isInSelectedPeriod(r.date, new Date()))
+          .reduce((sum, r) => sum + r.count, 0)
+      ),
+      stack: 'Stack 0'
+    }));
+
+    this.stackedChartData.labels = employees;
+    this.stackedChartData.datasets = datasets;
+    this.stackedChart.chart?.update();
   }
 
   private isInSelectedPeriod(date: Date, now: Date): boolean {
@@ -176,8 +202,7 @@ export class SalesComponent {
     switch (this.selectedPeriod) {
       case 'daily': return d.toDateString() === now.toDateString();
       case 'weekly': {
-        const weekAgo = new Date(now); weekAgo.setDate(now.getDate() - 7);
-        return d >= weekAgo && d <= now;
+        const w = new Date(now); w.setDate(now.getDate() - 7); return d >= w && d <= now;
       }
       case 'monthly': return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
       case 'yearly': return d.getFullYear() === now.getFullYear();
