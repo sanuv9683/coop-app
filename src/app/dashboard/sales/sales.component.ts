@@ -3,18 +3,16 @@ import { Chart, ChartOptions, registerables } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import 'chartjs-adapter-date-fns';
 import 'chartjs-chart-matrix';
+import {SalesRecord} from "../../dto/Sales";
 
+import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
+Chart.register(...registerables, MatrixController, MatrixElement);
 
 // Register Chart.js components
-Chart.register(...registerables);
+// Chart.register(...registerables);
 import { ChartType } from 'chart.js';
 
-interface SalesRecord {
-  employeeName: string;
-  date: Date;
-  count: number;
-  store: string;
-}
+
 
 type Period = 'daily' | 'weekly' | 'monthly' | 'yearly';
 
@@ -101,37 +99,33 @@ export class SalesComponent  implements OnInit, AfterViewInit {
   // Bar Chart
   public barChartType: ChartType = 'bar';
   @ViewChild('barChart', { read: BaseChartDirective }) barChart?: BaseChartDirective;
-  // @ViewChild('barChart', { read: BaseChartDirective }) barChart?: BaseChartDirective;
   public barChartOptions: ChartOptions = { responsive: true, scales: { x: {}, y: { beginAtZero: true } } };
   public barChartData = { labels: [] as string[], datasets: [{ data: [] as number[], label: '' }] };
 
   // Line Chart
   public lineChartType: ChartType = 'line';
   @ViewChild('lineChart', { read: BaseChartDirective }) lineChart?: BaseChartDirective;
-  // @ViewChild('lineChart', { read: BaseChartDirective }) lineChart?: BaseChartDirective;
   public lineChartOptions: ChartOptions = { responsive: true, scales: { x: {}, y: { beginAtZero: true } } };
   public lineChartData = { labels: [] as string[], datasets: [{ data: [] as number[], label: 'Monthly Sales' }] };
 
   // Stacked Bar Chart
   public stackedChartType: ChartType = 'bar';
   @ViewChild('stackedChart', { read: BaseChartDirective }) stackedChart?: BaseChartDirective;
-  // @ViewChild('stackedChart', { read: BaseChartDirective }) stackedChart?: BaseChartDirective;
   public stackedChartOptions: ChartOptions = {
     responsive: true,
     scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
   };
+
   public stackedChartData = { labels: [] as string[], datasets: [] as any[] };
 
   // Doughnut Chart
   public doughnutChartType: ChartType = 'doughnut';
   @ViewChild('doughnutChart', { read: BaseChartDirective }) doughnutChart?: BaseChartDirective;
-  // @ViewChild('doughnutChart', { read: BaseChartDirective }) doughnutChart?: BaseChartDirective;
   public doughnutChartOptions: ChartOptions = { responsive: true, plugins: { legend: { position: 'bottom' } } };
   public doughnutChartData = { labels: [] as string[], datasets: [{ data: [] as number[], label: 'Sales Share' }] };
 
   // Heatmap Calendar
   public heatmapChartType: ChartType = 'matrix';
-  // @ViewChild('heatmapChart', { read: BaseChartDirective }) heatmapChart?: BaseChartDirective;
   @ViewChild('heatmapChart', { read: BaseChartDirective }) heatmapChart?: BaseChartDirective;
   public heatmapChartOptions: ChartOptions = {
     responsive: true,

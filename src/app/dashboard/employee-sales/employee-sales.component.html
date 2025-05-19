@@ -1,0 +1,56 @@
+<div class="report-container">
+  <div class="controls">
+    <label>
+      Employee:
+      <select [(ngModel)]="selectedEmployee" (change)="onEmployeeChange(selectedEmployee)">
+        <option *ngFor="let emp of employees" [value]="emp">{{ emp }}</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="charts-grid">
+    <!-- Daily -->
+    <div class="chart-block">
+      <h4>Today’s Sales</h4>
+      <canvas baseChart
+              #dailyChart
+              [data]="dailyData"
+              [options]="chartOptions"
+              [type]="barType">
+      </canvas>
+    </div>
+
+    <!-- Weekly -->
+    <div class="chart-block">
+      <h4>Last 7 Days</h4>
+      <canvas baseChart
+              #weeklyChart
+              [data]="weeklyData"
+              [options]="chartOptions"
+              [type]="lineType">
+      </canvas>
+    </div>
+
+    <!-- Monthly -->
+    <div class="chart-block">
+      <h4>Current Month</h4>
+      <canvas baseChart
+              #monthlyChart
+              [data]="monthlyData"
+              [options]="chartOptions"
+              [type]="barType">
+      </canvas>
+    </div>
+
+    <!-- Yearly -->
+    <div class="chart-block">
+      <h4>This Year (by Month)</h4>
+      <canvas baseChart
+              #yearlyChart
+              [data]="yearlyData"
+              [options]="chartOptions"
+              [type]="lineType">
+      </canvas>
+    </div>
+  </div>
+</div>

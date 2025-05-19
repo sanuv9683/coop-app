@@ -10,6 +10,7 @@ import { HeaderComponent } from './common/header/header.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { CollegeComponent } from './college/college.component';
 import { SalesComponent } from './sales/sales.component';
+import { EmployeeSalesComponent } from './employee-sales/employee-sales.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { SalesComponent } from './sales/sales.component';
     HeaderComponent,
     FooterComponent,
     CollegeComponent,
-    SalesComponent
+    SalesComponent,
+    EmployeeSalesComponent
   ],
   imports: [
     CommonModule,

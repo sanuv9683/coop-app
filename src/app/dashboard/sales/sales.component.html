@@ -11,24 +11,40 @@
       </select>
     </label>
   </div>
-  <div class="chart-block">
-    <h3>{{ selectedPeriod | titlecase }} Sales by Employee</h3>
-    <canvas baseChart #barChart [data]="barChartData" [options]="barChartOptions" [type]="barChartType"></canvas>
-  </div>
-  <div class="chart-block">
-    <h3>Sales Trend (Last 12 Months)</h3>
-    <canvas baseChart #lineChart [data]="lineChartData" [options]="lineChartOptions" [type]="lineChartType"></canvas>
-  </div>
-  <div class="chart-block">
-    <h3>Employee Contributions by Store</h3>
-    <canvas baseChart #stackedChart [data]="stackedChartData" [options]="stackedChartOptions" [type]="stackedChartType"></canvas>
-  </div>
-  <div class="chart-block">
-    <h3>{{ selectedPeriod | titlecase }} Sales Share</h3>
-    <canvas baseChart #doughnutChart [data]="doughnutChartData" [options]="doughnutChartOptions" [type]="doughnutChartType"></canvas>
-  </div>
-  <div class="chart-block">
-    <h3>Daily Sales Heatmap</h3>
-    <canvas baseChart #heatmapChart [data]="heatmapChartData" [options]="heatmapChartOptions" [type]="heatmapChartType"></canvas>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="chart-block">
+        <h3>{{ selectedPeriod | titlecase }} Sales by Employee</h3>
+        <canvas baseChart #barChart [data]="barChartData" [options]="barChartOptions" [type]="barChartType"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-block">
+        <h3>Sales Trend (Last 12 Months)</h3>
+        <canvas baseChart #lineChart [data]="lineChartData" [options]="lineChartOptions"
+                [type]="lineChartType"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-block">
+        <h3>Employee Contributions by Store</h3>
+        <canvas baseChart #stackedChart [data]="stackedChartData" [options]="stackedChartOptions"
+                [type]="stackedChartType"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-block">
+        <h3>{{ selectedPeriod | titlecase }} Sales Share</h3>
+        <canvas baseChart #doughnutChart [data]="doughnutChartData" [options]="doughnutChartOptions"
+                [type]="doughnutChartType"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-block">
+        <h3>Daily Sales Heatmap</h3>
+        <canvas baseChart #heatmapChart [data]="heatmapChartData" [options]="heatmapChartOptions"
+                [type]="heatmapChartType"></canvas>
+      </div>
+    </div>
   </div>
 </div>
