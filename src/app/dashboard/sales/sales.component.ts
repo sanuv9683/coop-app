@@ -1,8 +1,13 @@
-import {Component, ViewChild} from '@angular/core';
-import {Chart, ChartData, ChartOptions, ChartType, registerables} from 'chart.js';
-import {BaseChartDirective} from 'ng2-charts';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { Chart, ChartOptions, registerables } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
+import 'chartjs-adapter-date-fns';
+import 'chartjs-chart-matrix';
 
+
+// Register Chart.js components
 Chart.register(...registerables);
+import { ChartType } from 'chart.js';
 
 interface SalesRecord {
   employeeName: string;
@@ -18,7 +23,7 @@ type Period = 'daily' | 'weekly' | 'monthly' | 'yearly';
   templateUrl: './sales.component.html',
   styleUrls: ['./sales.component.css']
 })
-export class SalesComponent {
+export class SalesComponent  implements OnInit, AfterViewInit {
   salesData: SalesRecord[] = [
     {employeeName: 'Kasun', date: new Date('2025-10-13'), count: 16, store: 'East Barnet'},
     {employeeName: 'Kasun', date: new Date('2025-09-28'), count: 12, store: 'Woodhouse'},
@@ -85,8 +90,6 @@ export class SalesComponent {
     {employeeName: 'Kasun', date: new Date('2025-09-18'), count: 14, store: 'East Barnet'},
     {employeeName: 'Alex', date: new Date('2025-12-21'), count: 5, store: 'East Barnet'},
   ];
-
-  // stores: string[] = ['East Barnet', 'Woodhouse'];
   stores = Array.from(new Set(this.salesData.map(r => r.store)));
   selectedStore = this.stores[0];
 
@@ -96,28 +99,59 @@ export class SalesComponent {
   aggregatedData: { employeeName: string; total: number }[] = [];
 
   // Bar Chart
-  @ViewChild('barChart', { read: BaseChartDirective }) barChart?: BaseChartDirective;
   public barChartType: ChartType = 'bar';
+  @ViewChild('barChart', { read: BaseChartDirective }) barChart?: BaseChartDirective;
+  // @ViewChild('barChart', { read: BaseChartDirective }) barChart?: BaseChartDirective;
   public barChartOptions: ChartOptions = { responsive: true, scales: { x: {}, y: { beginAtZero: true } } };
-  public barChartData: ChartData<'bar'> = { labels: [], datasets: [{ data: [], label: '' }] };
+  public barChartData = { labels: [] as string[], datasets: [{ data: [] as number[], label: '' }] };
 
   // Line Chart
-  @ViewChild('lineChart', { read: BaseChartDirective }) lineChart?: BaseChartDirective;
   public lineChartType: ChartType = 'line';
+  @ViewChild('lineChart', { read: BaseChartDirective }) lineChart?: BaseChartDirective;
+  // @ViewChild('lineChart', { read: BaseChartDirective }) lineChart?: BaseChartDirective;
   public lineChartOptions: ChartOptions = { responsive: true, scales: { x: {}, y: { beginAtZero: true } } };
-  public lineChartData: ChartData<'line'> = { labels: [], datasets: [{ data: [], label: 'Monthly Sales' }] };
+  public lineChartData = { labels: [] as string[], datasets: [{ data: [] as number[], label: 'Monthly Sales' }] };
 
-  // Stacked Bar Chart: Employee by Store
-  @ViewChild('stackedChart', { read: BaseChartDirective }) stackedChart?: BaseChartDirective;
+  // Stacked Bar Chart
   public stackedChartType: ChartType = 'bar';
+  @ViewChild('stackedChart', { read: BaseChartDirective }) stackedChart?: BaseChartDirective;
+  // @ViewChild('stackedChart', { read: BaseChartDirective }) stackedChart?: BaseChartDirective;
   public stackedChartOptions: ChartOptions = {
     responsive: true,
+    scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+  };
+  public stackedChartData = { labels: [] as string[], datasets: [] as any[] };
+
+  // Doughnut Chart
+  public doughnutChartType: ChartType = 'doughnut';
+  @ViewChild('doughnutChart', { read: BaseChartDirective }) doughnutChart?: BaseChartDirective;
+  // @ViewChild('doughnutChart', { read: BaseChartDirective }) doughnutChart?: BaseChartDirective;
+  public doughnutChartOptions: ChartOptions = { responsive: true, plugins: { legend: { position: 'bottom' } } };
+  public doughnutChartData = { labels: [] as string[], datasets: [{ data: [] as number[], label: 'Sales Share' }] };
+
+  // Heatmap Calendar
+  public heatmapChartType: ChartType = 'matrix';
+  // @ViewChild('heatmapChart', { read: BaseChartDirective }) heatmapChart?: BaseChartDirective;
+  @ViewChild('heatmapChart', { read: BaseChartDirective }) heatmapChart?: BaseChartDirective;
+  public heatmapChartOptions: ChartOptions = {
+    responsive: true,
     scales: {
-      x: { stacked: true },
-      y: { stacked: true, beginAtZero: true }
+      x: { type: 'time', time: { unit: 'day' }, offset: true },
+      y: { type: 'category', labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          title: () => '',
+          label: ctx => {
+            const v: any = ctx.raw;
+            return `${v.x.toDateString()}: ${v.v} sales`;
+          }
+        }
+      }
     }
   };
-  public stackedChartData: ChartData<'bar'> = { labels: [], datasets: [] };
+  public heatmapChartData: any = { datasets: [{ label: 'Daily Sales', data: [] }] };
 
   ngOnInit() {
     this.aggregateEmployeeSales();
@@ -142,17 +176,15 @@ export class SalesComponent {
     this.renderBarChart();
     this.renderLineChart();
     this.renderStackedChart();
+    this.renderDoughnutChart();
+    this.renderHeatmapChart();
   }
 
   private aggregateEmployeeSales() {
     const now = new Date();
-    const filtered = this.salesData.filter(r =>
-      r.store === this.selectedStore && this.isInSelectedPeriod(r.date, now)
-    );
+    const filtered = this.salesData.filter(r => r.store === this.selectedStore && this.isInSelectedPeriod(r.date, now));
     const map = new Map<string, number>();
-    filtered.forEach(r => {
-      map.set(r.employeeName, (map.get(r.employeeName) || 0) + r.count);
-    });
+    filtered.forEach(r => map.set(r.employeeName, (map.get(r.employeeName) || 0) + r.count));
     this.aggregatedData = Array.from(map.entries()).map(([employeeName, total]) => ({ employeeName, total }));
   }
 
@@ -170,7 +202,8 @@ export class SalesComponent {
     const months = Array.from({ length: 12 }).map((_, i) => new Date(now.getFullYear(), now.getMonth() - (11 - i), 1));
     this.lineChartData.labels = months.map(d => d.toLocaleString('default', { month: 'short' }));
     this.lineChartData.datasets[0].data = months.map(m =>
-      this.salesData.filter(r => r.store === this.selectedStore && r.date.getFullYear() === m.getFullYear() && r.date.getMonth() === m.getMonth())
+      this.salesData
+        .filter(r => r.store === this.selectedStore && r.date.getFullYear() === m.getFullYear() && r.date.getMonth() === m.getMonth())
         .reduce((sum, r) => sum + r.count, 0)
     );
     this.lineChart.chart?.update();
@@ -178,32 +211,42 @@ export class SalesComponent {
 
   private renderStackedChart() {
     if (!this.stackedChart) return;
-    // Group sales by employee and store across period
     const employees = Array.from(new Set(this.salesData.map(r => r.employeeName)));
-    const stores = this.stores;
-
-    // Prepare datasets: one per store
-    const datasets = stores.map(store => ({
+    const datasets = this.stores.map(store => ({
       label: store,
       data: employees.map(emp =>
-        this.salesData.filter(r => r.store === store && r.employeeName === emp && this.isInSelectedPeriod(r.date, new Date()))
+        this.salesData
+          .filter(r => r.store === store && r.employeeName === emp && this.isInSelectedPeriod(r.date, new Date()))
           .reduce((sum, r) => sum + r.count, 0)
       ),
       stack: 'Stack 0'
     }));
-
     this.stackedChartData.labels = employees;
     this.stackedChartData.datasets = datasets;
     this.stackedChart.chart?.update();
+  }
+
+  private renderDoughnutChart() {
+    if (!this.doughnutChart) return;
+    this.doughnutChartData.labels = this.aggregatedData.map(d => d.employeeName);
+    this.doughnutChartData.datasets[0].data = this.aggregatedData.map(d => d.total);
+    this.doughnutChart.chart?.update();
+  }
+
+  private renderHeatmapChart() {
+    if (!this.heatmapChart) return;
+    const now = new Date();
+    const filtered = this.salesData.filter(r => r.store === this.selectedStore && this.isInSelectedPeriod(r.date, now));
+    const points = filtered.map(r => ({ x: r.date, y: r.date.getDay(), v: r.count }));
+    this.heatmapChartData.datasets[0].data = points;
+    this.heatmapChart.chart?.update();
   }
 
   private isInSelectedPeriod(date: Date, now: Date): boolean {
     const d = new Date(date);
     switch (this.selectedPeriod) {
       case 'daily': return d.toDateString() === now.toDateString();
-      case 'weekly': {
-        const w = new Date(now); w.setDate(now.getDate() - 7); return d >= w && d <= now;
-      }
+      case 'weekly': { const w = new Date(now); w.setDate(now.getDate() - 7); return d >= w && d <= now; }
       case 'monthly': return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
       case 'yearly': return d.getFullYear() === now.getFullYear();
     }
