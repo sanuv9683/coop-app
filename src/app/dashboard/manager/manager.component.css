@@ -3,3 +3,83 @@
   background: #ffffff;
   color: #6d5858;
 }
+
+:root {
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --border-radius: 16px;
+  --primary: #5a67d8;
+  --danger: #e53e3e;
+  --badge-bg: rgba(90, 103, 216, 0.1);
+  --badge-color: var(--primary);
+}
+
+.modern-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  /*border: none;*/
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.modern-card-header {
+  /*border-bottom: none;*/
+  background: transparent;
+}
+
+.modern-badge {
+  background-color: var(--badge-bg);
+  color: var(--badge-color);
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+}
+
+.modern-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+}
+
+.modern-list-item {
+  background: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  margin-bottom: 0.75rem;
+  padding: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.modern-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.sale-info .employee-name {
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.sale-info .store-name {
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.modern-badge-pill {
+  background-color: var(--badge-bg);
+  color: var(--badge-color);
+  border-radius: 999px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: var(--danger);
+  transition: color 0.2s;
+}
+
+.delete-btn:hover {
+  color: #c53030;
+}

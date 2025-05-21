@@ -11,7 +11,11 @@ import { FooterComponent } from './common/footer/footer.component';
 import { CollegeComponent } from './college/college.component';
 import { SalesComponent } from './sales/sales.component';
 import { EmployeeSalesComponent } from './employee-sales/employee-sales.component';
-
+import { NgxPaginationModule } from 'ngx-pagination';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule }     from '@angular/material/card';
+import { MatButtonModule }   from '@angular/material/button';
+import { MatIconModule }     from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,12 @@ import { EmployeeSalesComponent } from './employee-sales/employee-sales.componen
     DashboardRoutingModule,
     FormsModule,
     NgChartsModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxPaginationModule,
+    MatGridListModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
   ]
 })
 export class DashboardModule { }

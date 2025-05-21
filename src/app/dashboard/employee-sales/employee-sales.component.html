@@ -1,56 +1,93 @@
-<div class="report-container">
-  <div class="controls">
-    <label>
-      Employee:
-      <select [(ngModel)]="selectedEmployee" (change)="onEmployeeChange(selectedEmployee)">
-        <option *ngFor="let emp of employees" [value]="emp">{{ emp }}</option>
-      </select>
-    </label>
+<div class="container-fluid mt-5 my-4 report-container">
+  <!-- Controls -->
+  <div class="row mb-4">
+    <div class="col-sm-6 col-md-4">
+      <div class="mb-3">
+        <label for="employeeSelect" class="form-label fw-semibold">Search By Employee</label>
+        <ng-select
+          id="employeeSelect"
+          [items]="employees"
+          bindLabel="name"
+          bindValue="name"
+          placeholder="Select employee"
+          [(ngModel)]="selectedEmployee"
+          (change)="onEmployeeChange($event)"
+          class="form-control"
+          [clearable]="false"
+          [searchable]="true">
+        </ng-select>
+      </div>
+    </div>
   </div>
 
-  <div class="charts-grid">
-    <!-- Daily -->
-    <div class="chart-block">
-      <h4>Today’s Sales</h4>
-      <canvas baseChart
-              #dailyChart
-              [data]="dailyData"
-              [options]="chartOptions"
-              [type]="barType">
-      </canvas>
+  <!-- Charts Grid -->
+  <div class="row gy-4">
+    <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">Today’s Sales</h5>
+        </div>
+        <div class="card-body">
+          <canvas baseChart
+                  #dailyChart
+                  [data]="dailyData"
+                  [options]="chartOptions"
+                  [type]="barType"
+                  class="w-100">
+          </canvas>
+        </div>
+      </div>
     </div>
 
-    <!-- Weekly -->
-    <div class="chart-block">
-      <h4>Last 7 Days</h4>
-      <canvas baseChart
-              #weeklyChart
-              [data]="weeklyData"
-              [options]="chartOptions"
-              [type]="lineType">
-      </canvas>
+    <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">Last 7 Days</h5>
+        </div>
+        <div class="card-body">
+          <canvas baseChart
+                  #weeklyChart
+                  [data]="weeklyData"
+                  [options]="chartOptions"
+                  [type]="lineType"
+                  class="w-100">
+          </canvas>
+        </div>
+      </div>
     </div>
 
-    <!-- Monthly -->
-    <div class="chart-block">
-      <h4>Current Month</h4>
-      <canvas baseChart
-              #monthlyChart
-              [data]="monthlyData"
-              [options]="chartOptions"
-              [type]="barType">
-      </canvas>
+    <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">Current Month</h5>
+        </div>
+        <div class="card-body">
+          <canvas baseChart
+                  #monthlyChart
+                  [data]="monthlyData"
+                  [options]="chartOptions"
+                  [type]="barType"
+                  class="w-100">
+          </canvas>
+        </div>
+      </div>
     </div>
 
-    <!-- Yearly -->
-    <div class="chart-block">
-      <h4>This Year (by Month)</h4>
-      <canvas baseChart
-              #yearlyChart
-              [data]="yearlyData"
-              [options]="chartOptions"
-              [type]="lineType">
-      </canvas>
+    <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white border-0">
+          <h5 class="mb-0">This Year (by Month)</h5>
+        </div>
+        <div class="card-body">
+          <canvas baseChart
+                  #yearlyChart
+                  [data]="yearlyData"
+                  [options]="chartOptions"
+                  [type]="lineType"
+                  class="w-100">
+          </canvas>
+        </div>
+      </div>
     </div>
   </div>
 </div>

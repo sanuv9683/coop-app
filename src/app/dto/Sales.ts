@@ -1,6 +1,7 @@
 export interface SalesRecord {
+  id?:string;
   employeeName: string;
-  date: Date;
+  date: string;
   count: number;
   store: string;
 }

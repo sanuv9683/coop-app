@@ -1,18 +1,19 @@
 <app-header></app-header>
 
 <div class="container mt-5">
-  <h3 class="mb-4">Manager Dashboard</h3>
+  <h2 class="mb-4">Colleagues Sales Management</h2>
   <div class="row">
     <div class="col-12 col-md-6">
-      <app-college></app-college>
+      <app-college [colleges]="colleagues"
+                   (itemsChange)="colleagues = $event">>
+      </app-college>
     </div>
     <div class="col-12 col-md-6">
-      <h4>Sales Management</h4>
       <div class="card p-4 shadow-sm mb-4">
-        <h5>Add Sales Entry</h5>
+        <h5>Update Sales Info</h5>
 
         <ng-select
-          [items]="collegess"
+          [items]="colleagues"
           bindLabel="name"
           bindValue="name"
           [(ngModel)]="selectedCollegeName"
@@ -25,27 +26,42 @@
           <option value="Wood House">Wood House</option>
         </select>
 
-<!--        <input type="text" [(ngModel)]="selectedCollegeName" class="form-control mb-3" placeholder="College Name">-->
         <input type="number" [(ngModel)]="cardsSold" class="form-control mb-3" placeholder="Cards Sold">
+        <input type="date" [(ngModel)]="selectedDate" class="form-control mb-3" placeholder="Select Date">
 
         <button class="btn btn-success" (click)="submitSale()">Submit</button>
         <p class="text-success mt-2" *ngIf="message">{{ message }}</p>
       </div>
     </div>
   </div>
+
   <div class="row">
-    <div class="col-12 mt-2">
-      <div class="card p-4 shadow-sm">
-        <h5>Today's Sales</h5>
-        <ul class="list-group">
-          <li *ngFor="let sale of todaySales" class="list-group-item">
-            {{ sale.college }} ({{ sale.store }}) - {{ sale.cardsSold }} cards
+    <div class="col-12 mt-4">
+      <div class="card modern-card">
+        <div class="card-header d-flex justify-content-between align-items-center modern-card-header">
+          <h3 class="mb-0">Today's Sales</h3>
+          <span class="badge modern-badge">{{ todaySales.length }} Sales</span>
+        </div>
+        <ul class="list-group modern-list">
+          <li *ngIf="!todaySales.length" class="list-group-item text-center text-muted py-4">
+            No sales recorded for today.
+          </li>
+          <li *ngFor="let sale of todaySales" class="list-group-item modern-list-item d-flex justify-content-between align-items-center">
+            <div class="sale-info">
+              <div class="employee-name">{{ sale.employeeName }}</div>
+              <div class="store-name">{{ sale.store }}</div>
+            </div>
+            <div class="d-flex align-items-center">
+              <span class="badge modern-badge-pill mr-3">{{ sale.count }} cards</span>
+              <button class="btn delete-btn p-0" (click)="onDelete(sale)" aria-label="Delete sale">
+                <i class="bi bi-trash fs-5"></i>
+              </button>
+            </div>
           </li>
         </ul>
       </div>
     </div>
   </div>
-
 </div>
 
 <app-footer></app-footer>

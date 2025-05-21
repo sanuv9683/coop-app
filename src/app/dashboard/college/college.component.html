@@ -1,7 +1,5 @@
-<!-- src/app/college-management/college-management.component.html -->
-<div class="mt-1">
-  <h3>College Management</h3>
 
+<div class="mt-1">
   <!-- ▶️ Add / Edit Form -->
   <div class="card p-4 mb-2 shadow-sm">
     <form (ngSubmit)="save()" class="row gy-2 gx-3 align-items-end">
@@ -17,14 +15,14 @@
       </div>
 
       <div class="col-md-3">
-        <label class="form-label">Store</label>
-        <select
-          [(ngModel)]="current.store"
-          name="store"
-          class="form-select"
-        >
-          <option *ngFor="let s of stores" [value]="s">{{ s }}</option>
-        </select>
+        <label class="form-label">Co-op ID</label>
+        <input
+          [(ngModel)]="current.coo_pid"
+          name="coo_pid"
+          class="form-control"
+          placeholder="Enter college id"
+          required
+        />
       </div>
 
       <div class="col-md-4 d-flex gap-2">
@@ -45,22 +43,28 @@
   <!-- ▶️ Colleges Table -->
   <div class="card p-4 shadow-sm">
     <h5 class="mb-3">All Colleges</h5>
+    <!-- Search box -->
+    <div class="mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by name or store…"
+        [(ngModel)]="searchText"
+      />
+    </div>
     <table class="table table-striped">
       <thead>
       <tr>
-        <!--        <th>ID</th>-->
         <th>Name</th>
-        <th>Store</th>
+        <th>Coop ID</th>
         <th class="text-end">Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let col of colleges">
-        <!--        <td style="font-size: .85em; color: #666;">-->
-        <!--          {{ col.id }}-->
-        <!--        </td>-->
+      <tr *ngFor="let col of filteredColleges
+                  | paginate: { itemsPerPage: pageSize, currentPage: page }">
         <td>{{ col.name }}</td>
-        <td>{{ col.store }}</td>
+        <td>{{ col.coo_pid }}</td>
         <td class="text-end">
           <button
             class="btn btn-sm btn-outline-secondary me-2"
@@ -74,7 +78,8 @@
           </button>
         </td>
       </tr>
-      <tr *ngIf="colleges.length === 0">
+
+      <tr *ngIf="filteredColleges.length === 0">
         <td colspan="4" class="text-center text-muted">
           No colleges found.
         </td>
@@ -83,3 +88,12 @@
     </table>
   </div>
 </div>
+
+<pagination-controls
+  (pageChange)="page = $event"
+  [autoHide]="true"
+  [maxSize]="5"
+  [previousLabel]="'<'"
+  [nextLabel]="'>'"
+  class="d-flex justify-content-center mt-2">
+</pagination-controls>

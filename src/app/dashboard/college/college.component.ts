@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {College} from '../../dto/college';
 import {CollegeService} from '../../services/college-service.service';
+
 
 @Component({
   selector: 'app-college',
@@ -8,9 +9,14 @@ import {CollegeService} from '../../services/college-service.service';
   styleUrls: ['./college.component.css']
 })
 export class CollegeComponent implements OnInit {
-  stores: College['store'][] = ['East Barnet', 'Wood House'];
-  colleges: College[] = [];
-  current: College = {name: '', store: this.stores[0]};
+  @Input() colleges: College[] = [];
+  /** Emit the updated list back up */
+  @Output() itemsChange = new EventEmitter<College[]>();
+
+  current: College = {name: '', coo_pid: ''};
+  page = 1;
+  readonly pageSize = 3;
+  searchText = '';
 
   constructor(private collegeSvc: CollegeService) {
   }
@@ -19,9 +25,22 @@ export class CollegeComponent implements OnInit {
     this.getAllColleges();
   }
 
-  getAllColleges(){
+  /**
+   * First filter by searchText, then paginate in template
+   */
+  get filteredColleges(): College[] {
+    if (!this.searchText) return this.colleges;
+    const term = this.searchText.toLowerCase();
+    return this.colleges.filter(c =>
+      c.name.toLowerCase().includes(term) ||
+      c.coo_pid.toLowerCase().includes(term)
+    );
+  }
+
+  getAllColleges() {
     this.collegeSvc.getColleges().subscribe(list => {
       this.colleges = list;
+      this.itemsChange.emit(list);
     });
   }
 
@@ -35,13 +54,13 @@ export class CollegeComponent implements OnInit {
       // existing → update
       await this.collegeSvc.updateCollege(this.current.id, {
         name: this.current.name,
-        store: this.current.store
+        coo_pid: this.current.coo_pid
       });
     } else {
       // new → add
       await this.collegeSvc.addCollege({
         name: this.current.name,
-        store: this.current.store
+        coo_pid: this.current.coo_pid
       });
     }
     this.getAllColleges();
@@ -65,6 +84,6 @@ export class CollegeComponent implements OnInit {
 
   /** Clear the form back to “add new” */
   resetForm() {
-    this.current = {name: '', store: this.stores[0]};
+    this.current = {name: '', coo_pid: ''};
   }
 }
