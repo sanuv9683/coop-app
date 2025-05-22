@@ -329,6 +329,8 @@ ISC
 ngx-pagination
 MIT
 
+rxfire/auth
+
 rxjs
 Apache-2.0
                                Apache License
