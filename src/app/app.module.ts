@@ -9,16 +9,20 @@ import {getAuth, provideAuth} from '@angular/fire/auth';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthTokenInterceptor} from "./filters/auth-token.interceptor";
+import { InfoComponent } from './info/info.component';
+import {DashboardModule} from "./dashboard/dashboard.module";
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    InfoComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    DashboardModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

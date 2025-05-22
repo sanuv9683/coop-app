@@ -16,7 +16,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule }     from '@angular/material/card';
 import { MatButtonModule }   from '@angular/material/button';
 import { MatIconModule }     from '@angular/material/icon';
-import {getAuth, provideAuth} from "@angular/fire/auth";
 
 @NgModule({
   declarations: [
@@ -28,6 +27,12 @@ import {getAuth, provideAuth} from "@angular/fire/auth";
     SalesComponent,
     EmployeeSalesComponent
   ],
+  exports: [
+    SalesComponent,
+    HeaderComponent,
+    EmployeeSalesComponent,
+    FooterComponent
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -38,7 +43,7 @@ import {getAuth, provideAuth} from "@angular/fire/auth";
     MatGridListModule,
     MatCardModule,
     MatButtonModule,
-    MatIconModule,
+    MatIconModule
   ]
 })
 export class DashboardModule { }
