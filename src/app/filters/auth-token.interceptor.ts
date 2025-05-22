@@ -8,6 +8,7 @@ import {switchMap, take} from 'rxjs/operators';
 export class AuthTokenInterceptor implements HttpInterceptor {
 
   constructor(private auth: AuthService) {
+    console.log("Auth Token Initiated")
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -18,6 +19,7 @@ export class AuthTokenInterceptor implements HttpInterceptor {
         if (!token) {
           return next.handle(req);
         }
+        console.log(token);
         const authReq = req.clone({
           setHeaders: {Authorization: `Bearer ${token}`}
         });
