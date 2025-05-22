@@ -104,6 +104,9 @@ Apache-2.0
 @firebase/app-check
 Apache-2.0
 
+@firebase/app-compat
+Apache-2.0
+
 @firebase/auth
 Apache-2.0
 
@@ -255,6 +258,8 @@ firebase/app
 firebase/app-check
 
 firebase/auth
+
+firebase/compat/app
 
 firebase/firestore
 
