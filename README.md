@@ -32,7 +32,9 @@ Navigate to `https://sanuv9683.github.io/coop-app/info` to explore the live site
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+© 2025 CoopApp. All rights reserved.
+
+No one is allowed to download and sell this software in any form. Unauthorized distribution, resale, or commercial use is strictly prohibited.
 
 ## Acknowledgements
 
