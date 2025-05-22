@@ -18,9 +18,8 @@ export class LoginComponent {
   }
 
   login() {
-    this.authService.login(this.username, this.password)
-      .then(() => this.router.navigate(['/dashboard/manager']))
-      .catch(err => this.error = 'Invalid credentials.');
+    this.authService.signIn(this.username, this.password)
+      .subscribe(() => this.router.navigate(['/dashboard/manager']))
   }
 
 

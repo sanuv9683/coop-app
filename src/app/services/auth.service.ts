@@ -1,29 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut, User } from '@angular/fire/auth';
-import { Router } from '@angular/router';
-
+import {
+  Auth,
+  authState,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  idToken,
+  User
+} from '@angular/fire/auth';
+import { from, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user: User | null = null;
+  /** Emits the current Firebase user (or null) */
+  user$: Observable<User | null> = authState(this.auth);
 
-  constructor(private auth: Auth, private router: Router) {
-    this.auth.onAuthStateChanged(user => this.user = user);
+  constructor(private auth: Auth) {}
+
+  signUp(email: string, password: string) {
+    return from(createUserWithEmailAndPassword(this.auth, email, password));
   }
 
-  login(email: string, password: string) {
-    console.log(signInWithEmailAndPassword(this.auth, email, password));
-    return signInWithEmailAndPassword(this.auth, email, password);
+  signIn(email: string, password: string) {
+    return from(signInWithEmailAndPassword(this.auth, email, password));
   }
 
-  logout() {
-    signOut(this.auth);
-    this.router.navigate(['/auth/login']);
+  signOut() {
+    return from(signOut(this.auth));
   }
 
-  isLoggedIn(): boolean {
-    return this.user !== null;
+  /** Get a (fresh) ID token */
+  getIdToken() {
+    return idToken(this.auth);
   }
 }
