@@ -1,27 +1,43 @@
 # CoopApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.0.
+## Overview
 
-## Development server
+CoopApp is a dynamic web application designed to foster healthy competition among colleges by showcasing and celebrating their membership card sales. By visualizing real-time sales data, CoopApp encourages each institution to engage more members, drive growth, and earn recognition for their achievements.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Key Features
 
-## Code scaffolding
+* **Real-Time Dashboard**: View up-to-date membership card sales for all participating colleges.
+* **Leaderboard**: Compare performance across institutions through a competitive ranking system.
+* **Detailed Analytics**: Drill down into sales trends, peak times, and growth over time.
+* **Responsive Design**: Accessible on desktops, tablets, and mobile devices for on-the-go insights.
+* **Customizable Views**: Filter and sort data by date range, region, or college type.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Technology Stack
 
-## Build
+* **Frontend**: Angular 16
+* **Styling**: HTML5, CSS3
+* **Build Tools**: Angular CLI
+* **Testing**: Karma & Jasmine
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## View Live Demo**
+Navigate to `https://sanuv9683.github.io/coop-app/info` to explore the live site.
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Usage
 
-## Running end-to-end tests
+* Upon loading, select a date range or filter criteria from the top toolbar.
+* Monitor the live leaderboard to see which college is leading.
+* Click on a college’s name to view detailed sales analytics.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+## License
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+This project is licensed under the [MIT License](LICENSE).
+
+## Acknowledgements
+
+Created upon the request of the store manager to inspire colleges and boost membership card sales.
+
+---
+
+**Hope you enjoy it! 2025-**
