@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {College} from '../../dto/college';
 import {CollegeService} from '../../services/college-service.service';
+import {AlertService} from "../../services/alert.service";
 
 
 @Component({
@@ -18,7 +19,7 @@ export class CollegeComponent implements OnInit {
   readonly pageSize = 3;
   searchText = '';
 
-  constructor(private collegeSvc: CollegeService) {
+  constructor(private collegeSvc: CollegeService, private alert: AlertService) {
   }
 
   ngOnInit() {
@@ -47,7 +48,8 @@ export class CollegeComponent implements OnInit {
   /** Add or update based on presence of current.id */
   async save() {
     if (!this.current.name.trim()) {
-      return alert('College name is required');
+      this.alert.normal("College name is required");
+      return;
     }
 
     if (this.current.id) {
@@ -55,12 +57,16 @@ export class CollegeComponent implements OnInit {
       await this.collegeSvc.updateCollege(this.current.id, {
         name: this.current.name,
         coo_pid: this.current.coo_pid
+      }).then(t => {
+        this.alert.myAlert("Successfully Updated.!");
       });
     } else {
       // new → add
       await this.collegeSvc.addCollege({
         name: this.current.name,
         coo_pid: this.current.coo_pid
+      }).then(t => {
+        this.alert.myAlert("Successfully Registered.!")
       });
     }
     this.getAllColleges();
@@ -75,11 +81,16 @@ export class CollegeComponent implements OnInit {
 
   /** Delete with confirmation */
   async delete(col: College) {
-    if (confirm(`Delete college “${col.name}”? This cannot be undone.`)) {
-      await this.collegeSvc.deleteCollege(col.id!);
-      if (this.current.id === col.id) this.resetForm();
-    }
-    this.getAllColleges();
+    this.alert.confirm("Are you sure ?", `Delete college ${col.name}? This cannot be undone?`).then(t => {
+      if (t.isConfirmed) {
+        this.collegeSvc.deleteCollege(col.id!).then(t => {
+          this.alert.myAlert("Successfully Deleted.!")
+        });
+        if (this.current.id === col.id) this.resetForm();
+      }
+      this.getAllColleges();
+    });
+
   }
 
   /** Clear the form back to “add new” */

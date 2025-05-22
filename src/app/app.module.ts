@@ -11,6 +11,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthTokenInterceptor} from "./filters/auth-token.interceptor";
 import { InfoComponent } from './info/info.component';
 import {DashboardModule} from "./dashboard/dashboard.module";
+import {SweetAlert2Module} from "@sweetalert2/ngx-sweetalert2";
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import {DashboardModule} from "./dashboard/dashboard.module";
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     BrowserAnimationsModule,
+    SweetAlert2Module.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true}

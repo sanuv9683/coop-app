@@ -3,6 +3,7 @@ import {SalesService} from "../../services/sales.service";
 import {CollegeService} from "../../services/college-service.service";
 import {College} from "../../dto/college";
 import {SalesRecord} from "../../dto/Sales";
+import {AlertService} from "../../services/alert.service";
 
 @Component({
   selector: 'app-manager',
@@ -20,7 +21,7 @@ export class ManagerComponent implements OnInit {
 
   selectedCollegeName: string = ''
 
-  constructor(private salesService: SalesService, private collegeSvc: CollegeService) {
+  constructor(private salesService: SalesService, private collegeSvc: CollegeService,private alertS:AlertService) {
   }
 
 
@@ -34,24 +35,24 @@ export class ManagerComponent implements OnInit {
 
   async submitSale() {
     if (!this.selectedCollegeName || !this.cardsSold) {
-      alert('Please fill out all fields.');
+      this.alertS.normal("Please fill out all fields.");
       return;
     }
 
     this.salesService.saleExists(this.selectedCollegeName, this.selectedDate).then(t => {
       if (!t) {
-        alert("This one is already added");
+        this.alertS.error("This record is already added");
       } else {
 
         this.salesService.addSale({
-
           employeeName: this.selectedCollegeName,
           date: this.selectedDate,
           count: this.cardsSold,
           store: this.store
+        }).then(t=>{
+          this.alertS.myAlert("Record Successfully Added.!")
         });
 
-        this.message = 'Sale submitted successfully!';
         this.college = '';
         this.loadTodaySales();
         this.cardsSold = NaN;
@@ -69,13 +70,17 @@ export class ManagerComponent implements OnInit {
 
   /** called by the template’s delete button */
   async onDelete(sale: SalesRecord) {
-    if (!confirm('Really delete this sale?')) return;
-    try {
-      await this.salesService.deleteSale(sale.id!);
-      await this.loadTodaySales();
-    } catch (err) {
-      alert('Could not delete; check console.');
-    }
+    this.alertS.confirm("Are you sure.?","Really delete this sale.?").then(t=>{
+      if (!t.isConfirmed) return;
+      try {
+         this.salesService.deleteSale(sale.id!).then(t=>{
+           this.loadTodaySales();
+         });
+
+      } catch (err) {
+        this.alertS.error("Could not delete; check console.");
+      }
+    });
   }
 
 }
